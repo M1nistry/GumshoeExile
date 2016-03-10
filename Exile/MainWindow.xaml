@@ -22,47 +22,6 @@
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Style x:Key="MetroMenuItem" TargetType="{x:Type MenuItem}">
-                <Setter Property="Background" Value="{DynamicResource MenuItemBackgroundBrush}" />
-                <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                <Setter Property="ScrollViewer.PanningMode" Value="Both" />
-                <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-                <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
-                <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
-                <Style.Triggers>
-                    <Trigger Property="Role" Value="TopLevelHeader">
-                        <Setter Property="Padding" Value="7 5 8 6" />
-                        <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
-                    </Trigger>
-                    <Trigger Property="Role" Value="TopLevelItem">
-                        <Setter Property="Padding" Value="7 5 8 6" />
-                        <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
-                    </Trigger>
-                    <Trigger Property="Role" Value="SubmenuHeader">
-                        <Setter Property="Padding" Value="2 6 2 6" />
-                        <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
-                    </Trigger>
-                    <Trigger Property="Role" Value="SubmenuItem">
-                        <Setter Property="Padding" Value="2 6 2 6" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            <Ellipse x:Key="AccentMenuIcon"
-                     Width="16"
-                     Height="16"
-                     Fill="{Binding ColorBrush, Mode=OneWay}"
-                     x:Shared="False" />
-            
-            <Style x:Key="AccentColorMenuItemStyle"
-                   BasedOn="{StaticResource MetroMenuItem}"
-                   TargetType="{x:Type MenuItem}">
-                <Setter Property="Command" Value="{Binding ChangeAccentCommand}" />
-                <Setter Property="Header" Value="{Binding Name, Mode=OneWay}" />
-                <Setter Property="Icon" Value="{StaticResource AccentMenuIcon}" />
-            </Style>
-            
-            
             <Style x:Key="TabItemText" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
@@ -119,7 +78,7 @@
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout x:Name="FlyoutSettings" Header="Settings" Position="Right" Width="250" Theme="Adapt" ExternalCloseButton="Right" CloseButtonVisibility="Collapsed">
+            <Controls:Flyout x:Name="FlyoutSettings" Header="Settings" Position="Right" Width="250" Theme="Adapt" ExternalCloseButton="Right" CloseButtonVisibility="Collapsed" AnimateOpacity="True">
                 <Grid Height="Auto" Width="202" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5">
                     <Grid.Resources>
                         <Style TargetType="{x:Type TextBox}">
@@ -146,12 +105,15 @@
                     <TextBox x:Name="TextBoxUserAgs" Grid.Row="0" Grid.Column="1" Height="22" Width="Auto"/>
 
                     <Label Content="PDF folder:" Grid.Row="1" Grid.Column="0"/>
-                    <TextBox x:Name="TextBoxPdfPath" Grid.Row="1" Grid.Column="1"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                        <TextBox x:Name="TextBoxPdfPath" MinWidth="105" Height="22" Width="Auto" Margin="0,0,3,0"/>
+                        <Button x:Name="ButtonBrowsePDF" Content="..." HorizontalAlignment="Center" Height="22" Width="22" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
+                    </StackPanel>
 
                     <Label Content="Roaming:" Grid.Row="2" Grid.Column="0"/>
                     <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
                         <TextBox x:Name="TextBoxRoaming" Width="Auto" MinWidth="105" Margin="0,0,3,0"/>
-                        <Button x:Name="ButtonBrowse" Content="..." HorizontalAlignment="Center" Height="22" Width="22" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
+                        <Button x:Name="ButtonBrowseRoaming" Content="..." HorizontalAlignment="Center" Height="22" Width="22" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
                     </StackPanel>
 
                     <Label Content="Style:" Grid.Row="3" Grid.Column="0"/>
@@ -197,7 +159,6 @@
                                             <RowDefinition />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <!-- Style="{DynamicResource AccentColorMenuItemStyle}"-->
                                         <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,2,0" ToolTip="{Binding Path=Name}" Style="{DynamicResource AccentColorMenuItemStyle}"/>
                                     </Grid>
                                 </DataTemplate>
@@ -236,7 +197,6 @@
                 <MenuItem Header="Help">
                     <MenuItem Header="About"/>
                 </MenuItem>
-                <MenuItem Header="Accent" ItemContainerStyle="{StaticResource AccentColorMenuItemStyle}" ItemsSource="{Binding AccentColors, Mode=OneWay}" />
             </Menu>
             <StackPanel Grid.Column="1">
                 
@@ -268,6 +228,7 @@
                                     </Style>
                                 </Grid.Resources>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
@@ -321,6 +282,34 @@
                                         </Style>
                                     </DatePicker.Style>
                                 </DatePicker>
+
+                                <Controls:MetroTabControl Grid.Row="3" Grid.ColumnSpan="4">
+                                    <Controls:MetroTabItem CloseButtonEnabled="True"
+                                               CloseTabCommand="{Binding SingleCloseTabCommand}"
+                                               CloseTabCommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}"
+                                               Controls:ControlsHelper.HeaderFontSize="14"
+                                               Header="Parts 1">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="26"/>
+                                                <RowDefinition Height="26"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="70"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="50"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <Label Content="Serial:"/>
+                                            <TextBox x:Name="TextBoxSerial" Grid.Row="0" Grid.Column="1" MinWidth="154"/>
+                                            
+                                            <Label Content="MPN:" Grid.Row="0" Grid.Column="2"/>
+                                            <TextBox x:Name="TextBoxMPN" Grid.Row="0" Grid.Column="3" MinWidth="154"/>
+                                        </Grid>
+                                    </Controls:MetroTabItem>
+                                </Controls:MetroTabControl>
                             </Grid>
                         </TabItem>
 

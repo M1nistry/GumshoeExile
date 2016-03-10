@@ -18,9 +18,8 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
-            <!--<RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>-->
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -32,14 +31,17 @@
         <TextBox x:Name="TextBoxUserAgs" Grid.Row="0" Grid.Column="1" Height="22" Width="Auto"/>
 
         <Label Content="PDF folder:" Grid.Row="1" Grid.Column="0"/>
-        <TextBox x:Name="TextBoxPdfPath" Grid.Row="1" Grid.Column="1"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+            <TextBox x:Name="TextBoxPdfPath" MinWidth="105" Height="22" Width="Auto" Margin="0,0,3,0"/>
+            <Button x:Name="ButtonBrowsePDF" Content="..." HorizontalAlignment="Center" Height="22" Width="25" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
+        </StackPanel>
 
         <Label Content="Roaming:" Grid.Row="2" Grid.Column="0"/>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
-            <TextBox x:Name="TextBoxRoaming" Width="Auto" MinWidth="105" Margin="0,0,3,0"/>
-            <Button x:Name="ButtonBrowse" Content="..." HorizontalAlignment="Center" Height="22" Width="22" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
+            <TextBox x:Name="TextBoxRoaming" Width="Auto" MinWidth="105" Margin="0,0,3,0" Height="22"/>
+            <Button x:Name="ButtonBrowseRoaming" Content="..." HorizontalAlignment="Center" Height="22" Width="25" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
         </StackPanel>
-        
+
         <Label Content="Style:" Grid.Row="3" Grid.Column="0"/>
         <ComboBox x:Name="ComboBoxStyle" Height="22" MaxHeight="22" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1">
             <ComboBox.Style>
@@ -47,39 +49,48 @@
                     <Setter Property="MinHeight" Value="22"></Setter>
                 </Style>
             </ComboBox.Style>
-            
+
             <ComboBoxItem Content="Light"/>
             <ComboBoxItem Content="Dark"/>
         </ComboBox>
-        
+
         <Label Content="Accent:" Grid.Row="4" Grid.Column="0"/>
         <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1">
             <StackPanel.Resources>
-                
-                
                 <ResourceDictionary>
                     <ResourceDictionary.MergedDictionaries>
                         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
                     </ResourceDictionary.MergedDictionaries>
-                    
-                    <Style x:Key="AccentColorMenuItemStyle"
-                        TargetType="{x:Type Button}">
+
+                    <Style x:Key="AccentColorMenuItemStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                         <Setter Property="Command" Value="{Binding ChangeAccentCommand}" />
                         <Setter Property="Background" Value="{Binding ColorBrush, Mode=OneWay}" />
                     </Style>
                 </ResourceDictionary>
-                
-                
             </StackPanel.Resources>
-            
-            
-            <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,2,0" Background="#FF2042DE"/>
-            <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,2,0" Background="#FFE800FF"/>
-            <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,2,0" Background="#FF0AD64B"/>
-            <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,2,0" Background="#FFFBE50D"/>
-            <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,2,0" Background="#FF00AEFF"/>
-            <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,2,0" Background="#FFFF0080"/>
-            <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,0,0" Background="#FF106830"/>
+
+            <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding AccentColors, Mode=OneWay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" MaxWidth="202" Height="Auto"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ToolTip="{Binding Path=Name}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition SharedSizeGroup="color" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,2,0" ToolTip="{Binding Path=Name}" Style="{DynamicResource AccentColorMenuItemStyle}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
+        <Button Content="Save" Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom"></Button>
     </Grid>
 </Window>
