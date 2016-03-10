@@ -1,0 +1,360 @@
+﻿<Controls:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	    xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
+        xmlns:customControls="clr-namespace:Exile.CustomControls"
+        xmlns:exile="clr-namespace:Exile"
+        x:Class="Exile.MainWindow"
+        mc:Ignorable="d"
+        Title="Exile v0.1" Height="750" Width="450"
+        ShowIconOnTitleBar="True" Icon="/Resources/GumshoeDetail.ico"
+        RightWindowCommandsOverlayBehavior="Never"
+        d:DataContext="{d:DesignInstance exile:MainWindowViewModel}"
+        BorderThickness="1"
+        BorderBrush="{StaticResource AccentColorBrush}">
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="MetroMenuItem" TargetType="{x:Type MenuItem}">
+                <Setter Property="Background" Value="{DynamicResource MenuItemBackgroundBrush}" />
+                <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                <Setter Property="ScrollViewer.PanningMode" Value="Both" />
+                <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+                <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+                <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
+                <Style.Triggers>
+                    <Trigger Property="Role" Value="TopLevelHeader">
+                        <Setter Property="Padding" Value="7 5 8 6" />
+                        <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
+                    </Trigger>
+                    <Trigger Property="Role" Value="TopLevelItem">
+                        <Setter Property="Padding" Value="7 5 8 6" />
+                        <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=TopLevelItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
+                    </Trigger>
+                    <Trigger Property="Role" Value="SubmenuHeader">
+                        <Setter Property="Padding" Value="2 6 2 6" />
+                        <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey ResourceId=SubmenuHeaderTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}}" />
+                    </Trigger>
+                    <Trigger Property="Role" Value="SubmenuItem">
+                        <Setter Property="Padding" Value="2 6 2 6" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Ellipse x:Key="AccentMenuIcon"
+                     Width="16"
+                     Height="16"
+                     Fill="{Binding ColorBrush, Mode=OneWay}"
+                     x:Shared="False" />
+            
+            <Style x:Key="AccentColorMenuItemStyle"
+                   BasedOn="{StaticResource MetroMenuItem}"
+                   TargetType="{x:Type MenuItem}">
+                <Setter Property="Command" Value="{Binding ChangeAccentCommand}" />
+                <Setter Property="Header" Value="{Binding Name, Mode=OneWay}" />
+                <Setter Property="Icon" Value="{StaticResource AccentMenuIcon}" />
+            </Style>
+            
+            
+            <Style x:Key="TabItemText" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="False">
+                    <Setter Property="Foreground" Value="{DynamicResource GrayNormalBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+            <ControlTemplate TargetType="ComboBox" x:Key="ComboBoxClients">
+                <ComboBox x:Name="ComboBoxSystem" VerticalAlignment="Center" BorderThickness="0" Style="{StaticResource TabItemText}" Margin="2,-3,2,0" Height="40" Width="120" FontSize="{DynamicResource TabItemFontSize}" SelectionChanged="ComboBox_SelectionChanged" PreviewMouseLeftButtonDown="ComboBoxSystem_PreviewMouseLeftButtonDown">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="SPLG" Foreground="{DynamicResource AccentColorBrush}"/>
+                        <ComboBoxItem Content="MMG" Foreground="{DynamicResource AccentColorBrush}"/>
+                    </ComboBox.Items>
+                </ComboBox>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsFocused" Value="True">
+                        <Setter TargetName="ComboBoxSystem" Property="Foreground" Value="{DynamicResource AccentColorBrush}"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="ComboBoxSystem" Property="Foreground" Value="{DynamicResource GrayHoverBrush}"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </ResourceDictionary>
+        
+    </Controls:MetroWindow.Resources>
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            
+            <Button Click="ButtonSettings_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.Resources>
+                            <Canvas x:Key="appbar_cog" Width="76" Height="76" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                                <Path Width="37.6263" Height="37.6262" Canvas.Left="19.1869" Canvas.Top="19.1868" Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="F1 M 27.5314,21.8628L 33.0126,19.4224L 34.7616,23.3507C 36.6693,22.9269 38.6044,22.8903 40.4668,23.2026L 42.0083,19.1868L 47.6098,21.337L 46.0683,25.3528C 47.6612,26.3669 49.0747,27.6889 50.2088,29.2803L 54.1371,27.5313L 56.5776,33.0126L 52.6493,34.7616C 53.0731,36.6693 53.1097,38.6043 52.7974,40.4668L 56.8131,42.0083L 54.6629,47.6097L 50.6472,46.0683C 49.6331,47.6613 48.3111,49.0748 46.7197,50.2089L 48.4686,54.1372L 42.9874,56.5776L 41.2384,52.6493C 39.3307,53.0731 37.3957,53.1097 35.5333,52.7974L 33.9918,56.8131L 28.3903,54.6629L 29.9318,50.6472C 28.3388,49.6331 26.9252,48.3111 25.7911,46.7196L 21.8628,48.4686L 19.4224,42.9873L 23.3507,41.2383C 22.9269,39.3307 22.8903,37.3957 23.2026,35.5332L 19.1869,33.9918L 21.3371,28.3903L 25.3528,29.9318C 26.3669,28.3388 27.6889,26.9252 29.2804,25.7911L 27.5314,21.8628 Z M 34.3394,29.7781C 29.7985,31.7998 27.7564,37.1198 29.7781,41.6606C 31.7998,46.2015 37.1198,48.2436 41.6606,46.2219C 46.2015,44.2002 48.2436,38.8802 46.2219,34.3394C 44.2002,29.7985 38.8802,27.7564 34.3394,29.7781 Z "/>
+                            </Canvas>
+                        </Rectangle.Resources>
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_cog}" />
+                        </Rectangle.OpacityMask> 
+                    </Rectangle>
+                    <TextBlock Margin="4 0 0 0"
+                   VerticalAlignment="Center"
+                   Text="settings" />
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout x:Name="FlyoutSettings" Header="Settings" Position="Right" Width="250" Theme="Adapt" ExternalCloseButton="Right" CloseButtonVisibility="Collapsed">
+                <Grid Height="Auto" Width="202" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </Grid.Resources>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="60"/>
+                        <!--<RowDefinition Height="26"/>
+            <RowDefinition Height="26"/>-->
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="User AGS:" Grid.Row="0" Grid.Column="0" />
+                    <TextBox x:Name="TextBoxUserAgs" Grid.Row="0" Grid.Column="1" Height="22" Width="Auto"/>
+
+                    <Label Content="PDF folder:" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox x:Name="TextBoxPdfPath" Grid.Row="1" Grid.Column="1"/>
+
+                    <Label Content="Roaming:" Grid.Row="2" Grid.Column="0"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
+                        <TextBox x:Name="TextBoxRoaming" Width="Auto" MinWidth="105" Margin="0,0,3,0"/>
+                        <Button x:Name="ButtonBrowse" Content="..." HorizontalAlignment="Center" Height="22" Width="22" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
+                    </StackPanel>
+
+                    <Label Content="Style:" Grid.Row="3" Grid.Column="0"/>
+                    <ComboBox x:Name="ComboBoxStyle" Height="22" MaxHeight="22" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                                <Setter Property="MinHeight" Value="22"></Setter>
+                            </Style>
+                        </ComboBox.Style>
+
+                        <ComboBoxItem Content="Light"/>
+                        <ComboBoxItem Content="Dark"/>
+                    </ComboBox>
+
+                    <Label Content="Accent:" Grid.Row="4" Grid.Column="0"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1">
+                        <StackPanel.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                                </ResourceDictionary.MergedDictionaries>
+
+                                <Style x:Key="AccentColorMenuItemStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Command" Value="{Binding ChangeAccentCommand}" />
+                                    <Setter Property="Background" Value="{Binding ColorBrush, Mode=OneWay}" />
+                                </Style>
+                            </ResourceDictionary>
+                        </StackPanel.Resources>
+                        
+                        <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding AccentColors, Mode=OneWay}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" MaxWidth="202" Height="Auto"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ToolTip="{Binding Path=Name}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="color" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <!-- Style="{DynamicResource AccentColorMenuItemStyle}"-->
+                                        <Button Width="15" Height="15" VerticalAlignment="Top" Margin="0,3,2,0" ToolTip="{Binding Path=Name}" Style="{DynamicResource AccentColorMenuItemStyle}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Grid>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+
+    <i:Interaction.Behaviors>
+        <Behaviours:BorderlessWindowBehavior/>
+    </i:Interaction.Behaviors>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="22" x:Name="RowStatusStrip"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Menu x:Name="MenuMain" Grid.Row="0">
+                <MenuItem Header="File">
+                    <MenuItem Header="Exit" Click="MenuItemExit_OnClick"/>
+                </MenuItem>
+                <MenuItem Header="Tools">
+                    <MenuItem Header="Options"/>
+                    <MenuItem x:Name="MenuItemToggle" Header="Toggle Dark" IsCheckable="True" Checked="MenuItemToggle_OnChecked"/>
+                </MenuItem>
+                <MenuItem Header="Help">
+                    <MenuItem Header="About"/>
+                </MenuItem>
+                <MenuItem Header="Accent" ItemContainerStyle="{StaticResource AccentColorMenuItemStyle}" ItemsSource="{Binding AccentColors, Mode=OneWay}" />
+            </Menu>
+            <StackPanel Grid.Column="1">
+                
+            </StackPanel>
+        </Grid>
+
+        <TabControl x:Name="TabControlMain" Grid.Row="1" Margin="0,5,0,2" SelectionChanged="TabControlMain_SelectionChanged">
+            <TabItem Header="WELCOME"></TabItem>
+            <TabItem x:Name="TabItemClients" Header="CLIENTS">
+                <TabItem.HeaderTemplate>
+                    <DataTemplate>
+                        <ComboBox Template="{StaticResource ComboBoxClients}"/>
+                    </DataTemplate>
+                </TabItem.HeaderTemplate>
+
+                <Grid>
+                    <TabControl x:Name="TabControlSplg" Visibility="Visible">
+                        <TabItem>
+                            <TabItem.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="SPLG" FontSize="15"></TextBlock>
+                                </DataTemplate>
+                            </TabItem.HeaderTemplate>
+
+                            <Grid x:Name="GridSplg" Height="Auto" VerticalAlignment="Top">
+                                <Grid.Resources>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ComboBox x:Name="ComboBoxSystem" Width="65" Margin="0,0,2,0" Grid.Row="0" Grid.Column="0" Height="22" MaxHeight="22" VerticalAlignment="Center">
+                                    <ComboBox.Style>
+                                        <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                                            <Setter Property="MinHeight" Value="22"></Setter>
+                                        </Style>
+                                    </ComboBox.Style>
+                                    <ComboBoxItem Content=""/>
+                                    <ComboBoxItem Content="TAS"/>
+                                    <ComboBoxItem Content="SIIAM"/>
+                                    <ComboBoxItem Content="Other"/>
+                                </ComboBox>
+                                <TextBox x:Name="TextBoxTicket" Width="Auto" Grid.Row="0" Grid.Column="1"/>
+
+                                <Label Content="Order:" Grid.Row="0" Grid.Column="2"/>
+                                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
+                                    <TextBox x:Name="TextBoxOrder" Width="Auto" MinWidth="83" Margin="0,0,3,0"/>
+                                    <CheckBox x:Name="CheckBoxOnHold" Width="50" Content="Hold"/>
+                                </StackPanel>
+
+                                <Label Content="Reference:" Grid.Row="1" Grid.Column="0"/>
+                                <TextBox x:Name="TextBoxReference" Width="Auto" Grid.Row="1" Grid.Column="1"/>
+
+                                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                                    <Label Content="Node" Width="50"/>
+                                    <TextBox x:Name="TextBoxNode" Width="45" Margin="0,0,2,0"/>
+                                    <Label Content="PuDo"/>
+                                    <TextBox x:Name="TextBoxPudo" Width="45"/>
+                                </StackPanel>
+
+                                <Label Content="AGS:" Grid.Row="2" Grid.Column="0"/>
+                                <TextBox x:Name="TextBoxAGS" Grid.Row="2" Grid.Column="1"/>
+
+                                <Label Content="Date:" Grid.Row="2" Grid.Column="2" />
+                                <DatePicker Grid.Row="2" Grid.Column="3">
+                                    <DatePicker.Style>
+                                        <Style TargetType="DatePicker" BasedOn="{StaticResource ResourceKey={x:Type DatePicker}}">
+                                            <Setter Property="MinHeight" Value="22"/>
+                                            <Setter Property="Height" Value="22"/>
+                                        </Style>
+                                    </DatePicker.Style>
+                                </DatePicker>
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem>
+                            <TabItem.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="Action Log" FontSize="15"></TextBlock>
+                                </DataTemplate>
+                            </TabItem.HeaderTemplate>
+                        </TabItem>
+
+                        <TabItem>
+                            <TabItem.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="System Log" FontSize="15"></TextBlock>
+                                </DataTemplate>
+                            </TabItem.HeaderTemplate>
+                        </TabItem>
+
+                    </TabControl>
+
+                    <TabControl x:Name="TabControlMMG" Visibility="Collapsed">
+                        <TabItem>
+                            <TabItem.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="MMG" FontSize="15"></TextBlock>
+                                </DataTemplate>
+                            </TabItem.HeaderTemplate>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <customControls:ExtendedStatusStrip x:Name="ExtendedStatusStripMain"  Grid.Row="2" BorderThickness="0,0,0,2" ClipToBounds="False"/>
+    </Grid>
+</Controls:MetroWindow>
