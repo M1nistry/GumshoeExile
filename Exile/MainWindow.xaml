@@ -91,9 +91,8 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="60"/>
-                        <!--<RowDefinition Height="26"/>
-            <RowDefinition Height="26"/>-->
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -164,6 +163,17 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1">
+                        <StackPanel.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </StackPanel.Resources>
+                        <Button Content="Save" VerticalAlignment="Bottom" Width="65" Margin="0,1,2,1" BorderThickness="0"/>
+                        <Button Content="Cancel" VerticalAlignment="Bottom" Width="65" Margin="0,1,2,1" BorderThickness="0"/>
                     </StackPanel>
                 </Grid>
             </Controls:Flyout>

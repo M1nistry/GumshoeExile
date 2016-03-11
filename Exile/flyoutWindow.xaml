@@ -33,13 +33,13 @@
         <Label Content="PDF folder:" Grid.Row="1" Grid.Column="0"/>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <TextBox x:Name="TextBoxPdfPath" MinWidth="105" Height="22" Width="Auto" Margin="0,0,3,0"/>
-            <Button x:Name="ButtonBrowsePDF" Content="..." HorizontalAlignment="Center" Height="22" Width="25" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
+            <Button x:Name="ButtonBrowsePDF" Content="..." HorizontalAlignment="Center" Height="22" Width="22" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
         </StackPanel>
 
         <Label Content="Roaming:" Grid.Row="2" Grid.Column="0"/>
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
-            <TextBox x:Name="TextBoxRoaming" Width="Auto" MinWidth="105" Margin="0,0,3,0" Height="22"/>
-            <Button x:Name="ButtonBrowseRoaming" Content="..." HorizontalAlignment="Center" Height="22" Width="25" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
+            <TextBox x:Name="TextBoxRoaming" Width="Auto" MinWidth="105" Margin="0,0,3,0"/>
+            <Button x:Name="ButtonBrowseRoaming" Content="..." HorizontalAlignment="Center" Height="22" Width="22" VerticalContentAlignment="Center" Style="{DynamicResource SquareButtonStyle}" BorderThickness="0" VerticalAlignment="Center" MinHeight="22" MinWidth="22" Padding="-1,0"/>
         </StackPanel>
 
         <Label Content="Style:" Grid.Row="3" Grid.Column="0"/>
@@ -91,6 +91,16 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
-        <Button Content="Save" Grid.Row="5" Grid.Column="1" VerticalAlignment="Bottom"></Button>
+        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1">
+            <StackPanel.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </StackPanel.Resources>
+            <Button Content="Save" VerticalAlignment="Bottom" Width="65" Margin="0,1,2,1" BorderThickness="0"/>
+            <Button Content="Cancel" VerticalAlignment="Bottom" Width="65" Margin="0,1,2,1" BorderThickness="0"/>
+        </StackPanel>
     </Grid>
 </Window>
