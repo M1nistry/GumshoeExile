@@ -17,23 +17,37 @@ namespace Exile
     {
         private readonly MainWindowViewModel _viewModel;
 
+        private bool Timestamps { get; set; }
+
         public MainWindow()
         {
             _viewModel = new MainWindowViewModel();
             DataContext = _viewModel;
             InitializeComponent();
-            ExtendedStatusStripMain.ButtonError.PreviewMouseDown += ButtonError_MouseDown;
-            ExtendedStatusStripMain.ButtonExpand.PreviewMouseDown += ButtonExpand_MouseDown;
-            ExtendedStatusStripMain.Timestamps = true;
-            ExtendedStatusStripMain.AddStatus($"Welcome back, {Environment.UserName}");
+            ButtonError.PreviewMouseDown += ButtonError_MouseDown;
+            ButtonExpand.PreviewMouseDown += ButtonExpand_MouseDown;
+            Timestamps = true;
+            AddStatus($"Welcome back, {Environment.UserName}");
 
+            
+        }
+
+        private void AddStatus(string status)
+        {
+            TextBlockStatus.Text = $"{status}";
+            ListBoxStatus.Items.Add($"{(true ? "[" + DateTime.Now.ToShortTimeString() + "] " : string.Empty)} {status}");
         }
 
         private void ButtonExpand_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            RowStatusStrip.Height = RowStatusStrip.ActualHeight >= 151 ? new GridLength(22) : new GridLength(151);
-            var listBox = ExtendedStatusStripMain.ListBoxStatus;
-            listBox.ScrollIntoView(listBox.Items[listBox.Items.Count-1]);
+            //RowStatusStrip.Height = RowStatusStrip.ActualHeight >= 151 ? new GridLength(22) : new GridLength(151);
+            //var listBox = ExtendedStatusStripMain.ListBoxStatus;
+            //listBox.ScrollIntoView(listBox.Items[listBox.Items.Count-1]);
+            
+            FlyoutStatus.IsOpen = !FlyoutStatus.IsOpen;
+            FlyoutStatus.IsHitTestVisible = FlyoutStatus.IsOpen;
+            var theme = ThemeManager.DetectAppStyle(Application.Current);
+            ListBoxStatus.BorderBrush = (Brush) theme.Item2.Resources["AccentColorBrush"];
             MenuMain.Focus();
         }
 
@@ -90,7 +104,6 @@ namespace Exile
             TabControlMain.SelectedIndex = 1;
         }
 
-
         public IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
             if (depObj == null) yield break;
@@ -118,6 +131,47 @@ namespace Exile
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
             FlyoutSettings.IsOpen = !FlyoutSettings.IsOpen;
+            ComboBoxStyle.SelectedItem = ComboBoxItemLight;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            FlyoutSettings.IsOpen = false;
+        }
+
+        private void ComboBoxStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var theme = ThemeManager.DetectAppStyle(Application.Current);
+            if (ComboBoxStyle.SelectedItem == ComboBoxItemLight)
+            {    
+                ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme("BaseLight"));
+            }
+            else
+            {
+                ThemeManager.ChangeAppStyle(Application.Current, theme.Item2, ThemeManager.GetAppTheme("BaseDark"));
+            }
+        }
+
+        private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((TabItem) e.AddedItems[0])?.Header?.ToString() == "+")
+            {
+                var newTab = new MetroTabItem
+                {
+                    Header = $"Parts {PartsTabControl.Items.Count}",
+                    Template = Resources["TemplatePartTab"] as ControlTemplate
+                };
+                try
+                {
+                    PartsTabControl.Items.Add(newTab);
+                    newTab.IsSelected = true;
+                }
+                catch (Exception eee)
+                {
+                    //Donothing
+                }
+                
+            }
         }
     }
 }

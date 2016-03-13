@@ -18,7 +18,7 @@ namespace Exile.CustomControls
         public void AddStatus(string status)
         {
             TextBlockStatus.Text = $"{status}";
-            ListBoxStatus.Items.Add($"{(Timestamps ? "[" + DateTime.Now.ToShortTimeString() + "] " : string.Empty)} {status}");
+            //ListBoxStatus.Items.Add($"{(Timestamps ? "[" + DateTime.Now.ToShortTimeString() + "] " : string.Empty)} {status}");
         }
         
     }

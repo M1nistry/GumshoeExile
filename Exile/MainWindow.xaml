@@ -49,6 +49,40 @@
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
+            
+            <ControlTemplate TargetType="Controls:MetroTabItem" x:Key="TemplatePartTab">
+                <Controls:MetroTabItem CloseButtonEnabled="True"
+                                               CloseTabCommand="{Binding SingleCloseTabCommand}"
+                                               CloseTabCommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}"
+                                               Controls:ControlsHelper.HeaderFontSize="14"
+                                               Header="Parts 1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="26"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Serial:"/>
+                        <TextBox x:Name="TextBoxSerial" Grid.Row="0" Grid.Column="1" MinWidth="154"/>
+
+                        <Label Content="MPN:" Grid.Row="0" Grid.Column="2"/>
+                        <TextBox x:Name="TextBoxMPN" Grid.Row="1" Grid.Column="3" MinWidth="154"/>
+
+                        <Label Content="Serial:" Grid.Row="1"/>
+                        <TextBox x:Name="TextBoxSerialFaulty" Grid.Row="1" Grid.Column="1" MinWidth="154"/>
+
+                        <Label Content="MPN:" Grid.Row="1" Grid.Column="2"/>
+                        <TextBox x:Name="TextBoxMPNFaulty" Grid.Row="1" Grid.Column="3" MinWidth="154"/>
+                    </Grid>
+                </Controls:MetroTabItem>
+            </ControlTemplate>
         </ResourceDictionary>
         
     </Controls:MetroWindow.Resources>
@@ -116,15 +150,15 @@
                     </StackPanel>
 
                     <Label Content="Style:" Grid.Row="3" Grid.Column="0"/>
-                    <ComboBox x:Name="ComboBoxStyle" Height="22" MaxHeight="22" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1">
+                    <ComboBox x:Name="ComboBoxStyle" Height="22" MaxHeight="22" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" SelectionChanged="ComboBoxStyle_SelectionChanged">
                         <ComboBox.Style>
                             <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
                                 <Setter Property="MinHeight" Value="22"></Setter>
                             </Style>
                         </ComboBox.Style>
 
-                        <ComboBoxItem Content="Light"/>
-                        <ComboBoxItem Content="Dark"/>
+                        <ComboBoxItem x:Name="ComboBoxItemLight" Content="Light"/>
+                        <ComboBoxItem x:Name="ComboBoxItemDark" Content="Dark"/>
                     </ComboBox>
 
                     <Label Content="Accent:" Grid.Row="4" Grid.Column="0"/>
@@ -173,9 +207,13 @@
                             </ResourceDictionary>
                         </StackPanel.Resources>
                         <Button Content="Save" VerticalAlignment="Bottom" Width="65" Margin="0,1,2,1" BorderThickness="0"/>
-                        <Button Content="Cancel" VerticalAlignment="Bottom" Width="65" Margin="0,1,2,1" BorderThickness="0"/>
+                        <Button Content="Cancel" VerticalAlignment="Bottom" Width="65" Margin="0,1,2,1" BorderThickness="0" Click="Button_Click" />
                     </StackPanel>
                 </Grid>
+            </Controls:Flyout>
+            
+            <Controls:Flyout x:Name="FlyoutStatus" Position="Bottom" Height="150" Theme="Adapt" AnimateOpacity="True"  CloseButtonVisibility="Collapsed" Margin="0,0,0,25">
+                <ListBox x:Name="ListBoxStatus" Margin="-35,0,0,-25" BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1,1,1,0"/>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
@@ -293,32 +331,8 @@
                                     </DatePicker.Style>
                                 </DatePicker>
 
-                                <Controls:MetroTabControl Grid.Row="3" Grid.ColumnSpan="4">
-                                    <Controls:MetroTabItem CloseButtonEnabled="True"
-                                               CloseTabCommand="{Binding SingleCloseTabCommand}"
-                                               CloseTabCommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}"
-                                               Controls:ControlsHelper.HeaderFontSize="14"
-                                               Header="Parts 1">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="26"/>
-                                                <RowDefinition Height="26"/>
-                                            </Grid.RowDefinitions>
-
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="70"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="50"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            
-                                            <Label Content="Serial:"/>
-                                            <TextBox x:Name="TextBoxSerial" Grid.Row="0" Grid.Column="1" MinWidth="154"/>
-                                            
-                                            <Label Content="MPN:" Grid.Row="0" Grid.Column="2"/>
-                                            <TextBox x:Name="TextBoxMPN" Grid.Row="0" Grid.Column="3" MinWidth="154"/>
-                                        </Grid>
-                                    </Controls:MetroTabItem>
+                                <Controls:MetroTabControl x:Name="PartsTabControl" Grid.Row="3" Grid.ColumnSpan="4" SelectionChanged="MetroTabControl_SelectionChanged">
+                                    <Controls:MetroTabItem x:Name="TabItemPartsAdd" Header="+" Controls:ControlsHelper.HeaderFontSize="14"/>
                                 </Controls:MetroTabControl>
                             </Grid>
                         </TabItem>
@@ -354,6 +368,18 @@
             </TabItem>
         </TabControl>
 
-        <customControls:ExtendedStatusStrip x:Name="ExtendedStatusStripMain"  Grid.Row="2" BorderThickness="0,0,0,2" ClipToBounds="False"/>
+        <StatusBar Height="25" Grid.Row="2">
+            <StatusBar.Items>
+                <StatusBarItem HorizontalAlignment="Left">
+                    <TextBlock x:Name="TextBlockStatus" Text="Status:" />
+                </StatusBarItem>
+                <StatusBarItem HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="ButtonError" Content="!" Width="15" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="0,-5,5,0"/>
+                        <Button x:Name="ButtonExpand" Content="↑" Width="15" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="0,-5,5,0"/>
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar.Items>
+        </StatusBar>
     </Grid>
 </Controls:MetroWindow>
