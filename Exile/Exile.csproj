@@ -69,6 +69,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CustomControls\FsRichTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="flyoutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -87,6 +91,9 @@
     </Compile>
     <Compile Include="CustomControls\ExtendedStatusStrip.xaml.cs">
       <DependentUpon>ExtendedStatusStrip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\FsRichTextBox.xaml.cs">
+      <DependentUpon>FsRichTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="flyoutWindow.xaml.cs">
       <DependentUpon>flyoutWindow.xaml</DependentUpon>

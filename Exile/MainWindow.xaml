@@ -6,11 +6,11 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 	    xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
-        xmlns:customControls="clr-namespace:Exile.CustomControls"
         xmlns:exile="clr-namespace:Exile"
+        xmlns:customControls="clr-namespace:Exile.CustomControls"
         x:Class="Exile.MainWindow"
         mc:Ignorable="d"
-        Title="Exile v0.1" Height="750" Width="450"
+        Title="Exile v0.1" Height="800" Width="450"
         ShowIconOnTitleBar="True" Icon="/Resources/GumshoeDetail.ico"
         RightWindowCommandsOverlayBehavior="Never"
         d:DataContext="{d:DesignInstance exile:MainWindowViewModel}"
@@ -20,6 +20,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="TabItemText" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
@@ -32,6 +33,10 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
+            <Style x:Key="StyleHeaderSize" BasedOn="{StaticResource ResourceKey={x:Type TabItem}}" TargetType="{x:Type TabItem}">
+                <Setter Property="Controls:ControlsHelper.HeaderFontSize" Value="14"/>
+            </Style>
 
             <ControlTemplate TargetType="ComboBox" x:Key="ComboBoxClients">
                 <ComboBox x:Name="ComboBoxSystem" VerticalAlignment="Center" BorderThickness="0" Style="{StaticResource TabItemText}" Margin="2,-3,2,0" Height="40" Width="120" FontSize="{DynamicResource TabItemFontSize}" SelectionChanged="ComboBox_SelectionChanged" PreviewMouseLeftButtonDown="ComboBoxSystem_PreviewMouseLeftButtonDown">
@@ -49,40 +54,47 @@
                     </Trigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
-            
-            <ControlTemplate TargetType="Controls:MetroTabItem" x:Key="TemplatePartTab">
-                <Controls:MetroTabItem CloseButtonEnabled="True"
-                                               CloseTabCommand="{Binding SingleCloseTabCommand}"
-                                               CloseTabCommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Header}"
-                                               Controls:ControlsHelper.HeaderFontSize="14"
-                                               Header="Parts 1">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="26"/>
-                            <RowDefinition Height="26"/>
-                        </Grid.RowDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+            <DataTemplate x:Key="TemplatePartTab">
+                <Grid Margin="-5,0,0,0">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBox}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </Grid.Resources>
 
-                        <Label Content="Serial:"/>
-                        <TextBox x:Name="TextBoxSerial" Grid.Row="0" Grid.Column="1" MinWidth="154"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                        <Label Content="MPN:" Grid.Row="0" Grid.Column="2"/>
-                        <TextBox x:Name="TextBoxMPN" Grid.Row="1" Grid.Column="3" MinWidth="154"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                        <Label Content="Serial:" Grid.Row="1"/>
-                        <TextBox x:Name="TextBoxSerialFaulty" Grid.Row="1" Grid.Column="1" MinWidth="154"/>
+                    <Label Content="Serial:"/>
+                    <TextBox x:Name="TextBoxSerial" Grid.Row="0" Grid.Column="1" MinWidth="150" Text="{Binding SpareSerial}"
+                            Controls:TextBoxHelper.ClearTextButton="True"
+                            Controls:TextBoxHelper.IsWaitingForData="True"
+                            Controls:TextBoxHelper.UseFloatingWatermark="True"
+                            Controls:TextBoxHelper.Watermark="Watermark"
+                            Controls:TextBoxHelper.SelectAllOnFocus="True"
+                             />
 
-                        <Label Content="MPN:" Grid.Row="1" Grid.Column="2"/>
-                        <TextBox x:Name="TextBoxMPNFaulty" Grid.Row="1" Grid.Column="3" MinWidth="154"/>
-                    </Grid>
-                </Controls:MetroTabItem>
-            </ControlTemplate>
+                    <Label Content="MPN:" Grid.Row="0" Grid.Column="2"/>
+                    <TextBox x:Name="TextBoxMPN" Grid.Row="0" Grid.Column="3" Width="150" Text="{Binding SpareMPN}"/>
+
+                    <Label Content="Serial:" Grid.Row="1"/>
+                    <TextBox x:Name="TextBoxSerialFaulty" Grid.Row="1" Grid.Column="1" MinWidth="150" Text="{Binding FaultSerial}"/>
+
+                    <Label Content="MPN:" Grid.Row="1" Grid.Column="2"/>
+                    <TextBox x:Name="TextBoxMPNFaulty" Grid.Row="1" Grid.Column="3" Width="150" Text="{Binding FaultMPN}"/>
+                </Grid>
+            </DataTemplate>
+
         </ResourceDictionary>
         
     </Controls:MetroWindow.Resources>
@@ -126,7 +138,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -226,7 +238,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="22" x:Name="RowStatusStrip"/>
+            <RowDefinition Height="25" x:Name="RowStatusStrip"/>
         </Grid.RowDefinitions>
 
         <Grid>
@@ -251,7 +263,7 @@
             </StackPanel>
         </Grid>
 
-        <TabControl x:Name="TabControlMain" Grid.Row="1" Margin="0,5,0,2" SelectionChanged="TabControlMain_SelectionChanged">
+        <TabControl x:Name="TabControlMain" Grid.Row="1" Margin="0,5,0,0" SelectionChanged="TabControlMain_SelectionChanged">
             <TabItem Header="WELCOME"></TabItem>
             <TabItem x:Name="TabItemClients" Header="CLIENTS">
                 <TabItem.HeaderTemplate>
@@ -269,23 +281,27 @@
                                 </DataTemplate>
                             </TabItem.HeaderTemplate>
 
-                            <Grid x:Name="GridSplg" Height="Auto" VerticalAlignment="Top">
+                            <Grid x:Name="GridSplg" Height="Auto">
                                 <Grid.Resources>
                                     <Style TargetType="{x:Type TextBox}">
                                         <Setter Property="VerticalAlignment" Value="Center"/>
                                     </Style>
                                 </Grid.Resources>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="26"/>
+                                    <RowDefinition Height="26"/>
+                                    <RowDefinition Height="26"/>
+                                    <RowDefinition Height="85"/>
+                                    <RowDefinition Height="26"/>
+                                    <RowDefinition Height="26"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="70"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="150"/>
                                     <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="150"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
@@ -304,7 +320,7 @@
 
                                 <Label Content="Order:" Grid.Row="0" Grid.Column="2"/>
                                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="3">
-                                    <TextBox x:Name="TextBoxOrder" Width="Auto" MinWidth="83" Margin="0,0,3,0"/>
+                                    <TextBox x:Name="TextBoxOrder" Width="Auto" MinWidth="93" Margin="0,0,2,0"/>
                                     <CheckBox x:Name="CheckBoxOnHold" Width="50" Content="Hold"/>
                                 </StackPanel>
 
@@ -313,16 +329,16 @@
 
                                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
                                     <Label Content="Node" Width="50"/>
-                                    <TextBox x:Name="TextBoxNode" Width="45" Margin="0,0,2,0"/>
+                                    <TextBox x:Name="TextBoxNode" Width="55" Margin="0,0,1,0"/>
                                     <Label Content="PuDo"/>
-                                    <TextBox x:Name="TextBoxPudo" Width="45"/>
+                                    <TextBox x:Name="TextBoxPudo" Width="55"/>
                                 </StackPanel>
 
                                 <Label Content="AGS:" Grid.Row="2" Grid.Column="0"/>
                                 <TextBox x:Name="TextBoxAGS" Grid.Row="2" Grid.Column="1"/>
 
                                 <Label Content="Date:" Grid.Row="2" Grid.Column="2" />
-                                <DatePicker Grid.Row="2" Grid.Column="3">
+                                <DatePicker Grid.Row="2" Grid.Column="3" Width="150" HorizontalAlignment="Left">
                                     <DatePicker.Style>
                                         <Style TargetType="DatePicker" BasedOn="{StaticResource ResourceKey={x:Type DatePicker}}">
                                             <Setter Property="MinHeight" Value="22"/>
@@ -331,9 +347,62 @@
                                     </DatePicker.Style>
                                 </DatePicker>
 
-                                <Controls:MetroTabControl x:Name="PartsTabControl" Grid.Row="3" Grid.ColumnSpan="4" SelectionChanged="MetroTabControl_SelectionChanged">
-                                    <Controls:MetroTabItem x:Name="TabItemPartsAdd" Header="+" Controls:ControlsHelper.HeaderFontSize="14"/>
-                                </Controls:MetroTabControl>
+                                <TabControl x:Name="PartsTabControl" Width="Auto" Height="Auto" Grid.Row="3" Grid.ColumnSpan="4" Grid.Column="0" SelectionChanged="PartsTabControl_SelectionChanged" ItemsSource="{Binding PartList}" ContentTemplate="{StaticResource TemplatePartTab}" Margin="0,0,-5,0">
+                                    <TabControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <TextBlock Text="{Binding Id}" FontSize="14"/>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </TabControl.ItemTemplate>
+                                    <!-- <Controls:MetroTabItem x:Name="TabItemAddParts" Header="+" CloseButtonEnabled="False" FontSize="14" PreviewMouseDown="TabItemAddParts_PreviewMouseDown" Style="{StaticResource StyleHeaderSize}"/> -->
+                                </TabControl>
+                                
+                                <Label Content="RTC:" Grid.Row="4" Grid.Column="0"/>
+                                <TextBox x:Name="TextBoxRTC" Grid.Row="4" Grid.Column="1"/>
+                                
+                                <Label Content="PDF:" Grid.Row="4" Grid.Column="2"/>
+                                
+                                <Label Content="Wiki:" Grid.Row="5" Grid.Column="0"/>
+                                <ComboBox x:Name="ComboBoxWiki" Grid.Row="5" Grid.Column="1" Height="22" MaxHeight="22" VerticalAlignment="Center">
+                                    <ComboBox.Style>
+                                        <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                                            <Setter Property="MinHeight" Value="22"></Setter>
+                                        </Style>
+                                    </ComboBox.Style>
+                                </ComboBox>
+                                
+                                <Label Content="Track" Grid.Row="5" Grid.Column="2"/>
+                                <TextBox x:Name="TextBoxConnote" Grid.Row="5" Grid.Column="3"/>
+
+                                <TabControl Grid.Row="6" Grid.ColumnSpan="5" Grid.Column="0" Controls:TabControlHelper.IsUnderlined="True">
+                                    <TabItem Controls:ControlsHelper.HeaderFontSize="12" Header="notes">
+                                        <customControls:FsRichTextBox x:Name="RichTextBoxNotes" Grid.Row="6" Grid.ColumnSpan="5" Grid.Column="0" MinHeight="348" SnapsToDevicePixels="True" CodeControlsVisibility="Collapsed"/>
+                                    </TabItem>
+
+                                    <TabItem Controls:ControlsHelper.HeaderFontSize="12" Header="locations">
+                                        <TabControl Controls:TabControlHelper.IsUnderlined="False">
+                                            <TabItem Controls:ControlsHelper.HeaderFontSize="10" Header="Locations">
+                                                
+                                            </TabItem>
+                                            <TabItem Controls:ControlsHelper.HeaderFontSize="10" Header="Kits">
+
+                                            </TabItem>
+                                            <TabItem Controls:ControlsHelper.HeaderFontSize="10" Header="Addresses">
+
+                                            </TabItem>
+                                            <TabItem Controls:ControlsHelper.HeaderFontSize="10" Header="Consumables">
+
+                                            </TabItem>
+                                        </TabControl>
+                                        
+                                    </TabItem>
+
+                                    <TabItem Controls:ControlsHelper.HeaderFontSize="12" Header="person"></TabItem>
+
+                                    <TabItem Controls:ControlsHelper.HeaderFontSize="12" Header="miscellaneous"></TabItem>
+                                    <TabItem Controls:ControlsHelper.HeaderFontSize="12" IsEnabled="False" Header="                                                     "></TabItem>
+                                </TabControl>
                             </Grid>
                         </TabItem>
 
@@ -371,12 +440,12 @@
         <StatusBar Height="25" Grid.Row="2">
             <StatusBar.Items>
                 <StatusBarItem HorizontalAlignment="Left">
-                    <TextBlock x:Name="TextBlockStatus" Text="Status:" />
+                    <TextBlock x:Name="TextBlockStatus" Text="Status:" Margin="3,0,0,0" />
                 </StatusBarItem>
                 <StatusBarItem HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal">
-                        <Button x:Name="ButtonError" Content="!" Width="15" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="0,-5,5,0"/>
-                        <Button x:Name="ButtonExpand" Content="↑" Width="15" Height="25" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="0,-5,5,0"/>
+                        <Button x:Name="ButtonError" Content="!" Width="15" Height="20" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="0,-1,5,0" Padding="0,2"/>
+                        <Button x:Name="ButtonExpand" Content="↑" Width="15" Height="20" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="0,-1,5,0" Padding="0,2"/>
                     </StackPanel>
                 </StatusBarItem>
             </StatusBar.Items>

@@ -28,7 +28,6 @@ namespace Exile
             ButtonExpand.PreviewMouseDown += ButtonExpand_MouseDown;
             Timestamps = true;
             AddStatus($"Welcome back, {Environment.UserName}");
-
             
         }
 
@@ -63,7 +62,8 @@ namespace Exile
 
         private void TabControlMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.Source is TabControl)
+            if (e.AddedItems.Count <= 0) return;
+            if (e.Source is TabControl && e.AddedItems[0] is TabControl)
             {
                 if (((TabItem) e.AddedItems[0])?.Header?.ToString() == "CLIENTS")
                 {
@@ -152,26 +152,34 @@ namespace Exile
             }
         }
 
-        private void MetroTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void AddNewParts()
         {
-            if (((TabItem) e.AddedItems[0])?.Header?.ToString() == "+")
+            var newTab = new MetroTabItem
             {
-                var newTab = new MetroTabItem
+                CloseTabCommand = new MainWindowViewModel.SimpleCommand
                 {
-                    Header = $"Parts {PartsTabControl.Items.Count}",
-                    Template = Resources["TemplatePartTab"] as ControlTemplate
-                };
-                try
-                {
-                    PartsTabControl.Items.Add(newTab);
-                    newTab.IsSelected = true;
-                }
-                catch (Exception eee)
-                {
-                    //Donothing
-                }
-                
-            }
+                    CanExecuteDelegate = x => true,
+                    ExecuteDelegate = x =>
+                    {
+                        ((MetroTabItem)x).Visibility = Visibility.Collapsed;
+                        //PartsTabControl.Items.Remove(x);
+                    }
+                },
+                CloseButtonEnabled = true,
+                ContentTemplate = Resources["TemplatePartTab"] as DataTemplate,
+                Style = Resources["StyleHeaderSize"] as Style
+            };
+
+            newTab.CloseTabCommandParameter = newTab;
+            newTab.Header = $"Parts {PartsTabControl.Items.Count}";
+
+            PartsTabControl.Items.Insert(PartsTabControl.Items.Count-1, newTab);
+        }
+
+        private void PartsTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedTab = PartsTabControl.SelectedItem;
+            Console.WriteLine(selectedTab);
         }
     }
 }
