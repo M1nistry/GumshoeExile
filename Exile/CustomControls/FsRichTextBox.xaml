@@ -95,18 +95,6 @@
                     </ComboBox.Style>
                 </ComboBox>
 
-                <Button Command="ApplicationCommands.Cut" CommandTarget="{Binding ElementName=TextBox}" ToolTip="Cut" Template="{StaticResource FlatButtonControlTemplate}" Margin="0,1,0,1" Visibility="Collapsed">
-                    <Image Source="Images\editcut.png" Stretch="None" SnapsToDevicePixels="True" />
-                </Button>
-
-                <Button Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=TextBox}" ToolTip="Copy" Template="{StaticResource FlatButtonControlTemplate}" Margin="0,1,0,1" Visibility="Collapsed">
-                    <Image Source="Images\editcopy.png" Stretch="None" SnapsToDevicePixels="True" />
-                </Button>
-
-                <Button Command="ApplicationCommands.Paste" CommandTarget="{Binding ElementName=TextBox}" ToolTip="Paste" Template="{StaticResource FlatButtonControlTemplate}" Margin="0,1,0,1" Visibility="Collapsed">
-                    <Image Source="Images\editpaste.png" Stretch="None" SnapsToDevicePixels="True" />
-                </Button>
-
                 <Button Command="ApplicationCommands.Undo" CommandTarget="{Binding ElementName=TextBox}" ToolTip="Undo" Style="{DynamicResource MetroCircleButtonStyle}"  Margin="0,0,0,0" Width="30" Height="30" BorderThickness="0">
                     <Rectangle Width="10" Height="10"  Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                         <Rectangle.Resources>
@@ -133,7 +121,7 @@
                     </Rectangle>
                 </Button>
 
-                <Image Source="Images\separator.png" Stretch="None" SnapsToDevicePixels="True" />
+                <Image Source="separator.png" Stretch="None" SnapsToDevicePixels="True" />
 
                 <ToggleButton x:Name="BoldButton" Command="EditingCommands.ToggleBold" CommandTarget="{Binding ElementName=TextBox}" Style="{DynamicResource MetroCircleToggleButtonStyle}" ToolTip="Bold" Width="30" Height="30" BorderThickness="0" >
                     <ToggleButton.BorderBrush>
@@ -176,7 +164,7 @@
                         </Rectangle.OpacityMask>
                     </Rectangle>
                 </ToggleButton>
-                <Image Source="Images\separator.png" Stretch="None" SnapsToDevicePixels="True" />
+                <Image Source="separator.png" Stretch="None" SnapsToDevicePixels="True" />
 
                 <ToggleButton x:Name="LeftButton" Command="EditingCommands.AlignLeft" CommandTarget="{Binding ElementName=TextBox}" ToolTip="Align Left" Style="{DynamicResource MetroCircleToggleButtonStyle}" Click="OnAlignmentButtonClick" Width="30" Height="30" BorderThickness="0">
                     <Rectangle Width="10" Height="10" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
@@ -232,7 +220,7 @@
                 
                 
                 
-                <Image Source="Images\separator.png" Stretch="None" SnapsToDevicePixels="True" />
+                <Image Source="separator.png" Stretch="None" SnapsToDevicePixels="True" />
 
                 <ToggleButton x:Name="BulletsButton" Command="EditingCommands.ToggleBullets" CommandTarget="{Binding ElementName=TextBox}" ToolTip="Bullets" Style="{DynamicResource MetroCircleToggleButtonStyle}" Click="OnListButtonClick" Width="30" Height="30" BorderThickness="0">
                     <Rectangle Width="10" Height="10" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">

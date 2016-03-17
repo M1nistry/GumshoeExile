@@ -67,14 +67,14 @@ namespace Exile
             {
                 if (((TabItem) e.AddedItems[0])?.Header?.ToString() == "CLIENTS")
                 {
-                    ComboBoxSystem.Foreground = (Brush) FindResource("AccentColorBrush");
+                    //ComboBoxSystem.Foreground = (Brush) FindResource("AccentColorBrush");
                     //this.ShowMessageAsync(, "Hello, world");
                     ///TODO dialog using templates
                     ///http://stackoverflow.com/questions/30751663/how-to-change-mahapps-metro-dialog-content-template-width/30797630#30797630
                 }
                 else if (((TabItem)e.AddedItems[0]).Header != null && ((TabItem)e.AddedItems[0])?.Header?.ToString() != "CLIENTS")
                 {
-                    ComboBoxSystem.Foreground = (Brush)FindResource("AccentColorBrush");
+                    //ComboBoxSystem.Foreground = (Brush)FindResource("AccentColorBrush");
                 }
             }
         }
@@ -130,6 +130,7 @@ namespace Exile
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
+            FlyoutSettings.IsModal = true;
             FlyoutSettings.IsOpen = !FlyoutSettings.IsOpen;
             ComboBoxStyle.SelectedItem = ComboBoxItemLight;
         }
@@ -152,34 +153,6 @@ namespace Exile
             }
         }
 
-        private void AddNewParts()
-        {
-            var newTab = new MetroTabItem
-            {
-                CloseTabCommand = new MainWindowViewModel.SimpleCommand
-                {
-                    CanExecuteDelegate = x => true,
-                    ExecuteDelegate = x =>
-                    {
-                        ((MetroTabItem)x).Visibility = Visibility.Collapsed;
-                        //PartsTabControl.Items.Remove(x);
-                    }
-                },
-                CloseButtonEnabled = true,
-                ContentTemplate = Resources["TemplatePartTab"] as DataTemplate,
-                Style = Resources["StyleHeaderSize"] as Style
-            };
-
-            newTab.CloseTabCommandParameter = newTab;
-            newTab.Header = $"Parts {PartsTabControl.Items.Count}";
-
-            PartsTabControl.Items.Insert(PartsTabControl.Items.Count-1, newTab);
-        }
-
-        private void PartsTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var selectedTab = PartsTabControl.SelectedItem;
-            Console.WriteLine(selectedTab);
-        }
+        
     }
 }

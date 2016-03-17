@@ -12,7 +12,7 @@ namespace Exile
 {
     public class MainWindowViewModel
     {
-        public List<Part> PartList { get; set; }
+       
 
         public MainWindowViewModel()
         {
@@ -20,32 +20,6 @@ namespace Exile
                                             .Select(a => new AccentColorMenuData() { Name = a.Name, ColorBrush = a.Resources["AccentColorBrush"] as Brush })
                                             .ToList();
             AccentColors.RemoveAt(AccentColors.Count-1);
-            PartList = new List<Part>();
-            PartList.Add(new Part
-            {
-                Id = PartList.Count + 1,
-                SpareSerial = "spareSerial",
-                SpareMPN = "spareMPN",
-                FaultSerial = "faultSerial",
-                FaultMPN = "faultMPN"
-            });
-            PartList.Add(new Part
-            {
-                Id = PartList.Count + 1,
-                SpareSerial = "1",
-                SpareMPN = "2",
-                FaultSerial = "3",
-                FaultMPN = "4"
-            });
-        }
-
-        public class Part
-        {
-            public int Id { get; set; }
-            public string SpareSerial { get; set; }
-            public string SpareMPN { get; set; }
-            public string FaultSerial { get; set; }
-            public string FaultMPN { get; set; }
         }
 
         public class AccentColorMenuData
