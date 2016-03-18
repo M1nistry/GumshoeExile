@@ -134,9 +134,7 @@ namespace Exile
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
-            FlyoutSettings.IsModal = true;
-            FlyoutSettings.IsOpen = !FlyoutSettings.IsOpen;
-            ComboBoxStyle.SelectedItem = ComboBoxItemLight;
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -157,6 +155,12 @@ namespace Exile
             }
         }
 
-        
+        private void MenuSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var theme = ThemeManager.DetectAppStyle(Application.Current);
+            FlyoutSettings.IsModal = true;
+            FlyoutSettings.IsOpen = !FlyoutSettings.IsOpen;
+            ComboBoxStyle.SelectedItem = theme.Item1.Name.EndsWith("Dark") ? ComboBoxItemDark : ComboBoxItemLight;
+        }
     }
 }

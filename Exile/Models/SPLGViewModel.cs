@@ -11,6 +11,7 @@ namespace Exile.Models
 
         public ObservableCollection<Part> PartList { get; set; }
         public Tickets.SPLG CurrentTicket { get; set; }
+        public ObservableCollection<Location.Storage> LocationCollection { get; set; } 
 
         public SPLGViewModel()
         {
@@ -67,6 +68,17 @@ namespace Exile.Models
                 Rating = 3,
                 Owner = new Person()
             };
+
+            LocationCollection = new ObservableCollection<Location.Storage>();
+            LocationCollection.Add(new Location.Storage
+            {
+                Plant = "FC01",
+                Sloc = "C001",
+                Description = "PUDO - ESPK",
+                Node = "ESPK",
+                Restricted = false,
+                Inbound = true
+            });
 
         }
     }

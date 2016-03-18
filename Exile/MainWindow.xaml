@@ -25,15 +25,15 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="TabItemText" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="False">
-                    <Setter Property="Foreground" Value="{DynamicResource GrayNormalBrush}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
+                        <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="False">
+                        <Setter Property="Foreground" Value="{DynamicResource GrayNormalBrush}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
 
             <Style x:Key="StyleHeaderSize" BasedOn="{StaticResource ResourceKey={x:Type TabItem}}" TargetType="{x:Type TabItem}">
                 <Setter Property="Controls:ControlsHelper.HeaderFontSize" Value="14"/>
@@ -212,9 +212,10 @@
                     <MenuItem Header="Exit" Click="MenuItemExit_OnClick"/>
                 </MenuItem>
                 <MenuItem Header="Tools">
-                    <MenuItem Header="Options"/>
+                    <MenuItem x:Name="MenuItemSettings" Header="Settings" Click="MenuSettings_Click"/>
                     <MenuItem x:Name="MenuItemToggle" Header="Toggle Dark" IsCheckable="True" Checked="MenuItemToggle_OnChecked"/>
                 </MenuItem>
+
                 <MenuItem Header="Help">
                     <MenuItem Header="About"/>
                 </MenuItem>

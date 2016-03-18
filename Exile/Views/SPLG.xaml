@@ -204,7 +204,30 @@
             <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="locations">
                 <TabControl controls:TabControlHelper.IsUnderlined="False">
                     <TabItem controls:ControlsHelper.HeaderFontSize="10" Header="Locations">
-
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBox x:Name="TextBoxLocationSearch" Style="{DynamicResource SearchMetroTextBox}" Width="180" Height="22" HorizontalAlignment="Right"/>
+                            <DataGrid x:Name="DataGridLocations" Grid.Row="1" Margin="0,5,0,0" CanUserResizeColumns="False" ItemsSource="{Binding LocationCollection}" AutoGenerateColumns="False">
+                                <DataGrid.ColumnHeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="FontSize" Value="12"/>
+                                    </Style>
+                                </DataGrid.ColumnHeaderStyle>
+                                    <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Plant" Width="50" Binding="{Binding Plant}"/>
+                                    <DataGridTextColumn Header="SLoc" Width="50" Binding="{Binding Node}"/>
+                                    <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Description}"/>
+                                    <DataGridTextColumn Header="Node" Width="50" Binding="{Binding Node}"/>
+                                    <DataGridCheckBoxColumn Header="" Width="20" Binding="{Binding Restricted}"/>
+                                    <DataGridCheckBoxColumn Header="" Width="20" Binding="{Binding Inbound}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
                     </TabItem>
                     <TabItem controls:ControlsHelper.HeaderFontSize="10" Header="Kits">
 
