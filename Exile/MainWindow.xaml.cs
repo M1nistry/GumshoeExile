@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
+using Application = System.Windows.Application;
+using ComboBox = System.Windows.Controls.ComboBox;
+using TabControl = System.Windows.Controls.TabControl;
 
 namespace Exile
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Exile.Models;
 
 namespace Exile.Views
@@ -24,6 +25,17 @@ namespace Exile.Views
                     Id = _viewmodel.PartList.Count
                 });
                 Dispatcher.BeginInvoke((Action)(() => PartsTabControl.SelectedIndex = _viewmodel.PartList.Count - 2));
+            }
+        }
+
+        private void ComboBoxWiki_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return || e.Key == Key.Enter)
+            {
+                int wikiId;
+                if (!int.TryParse(ComboBoxWiki.Text, out wikiId)) return;
+                _viewmodel.CurrentTicket.WikiIds.Add(wikiId);
+                ComboBoxWiki.Text = string.Empty;
             }
         }
     }

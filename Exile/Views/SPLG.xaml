@@ -144,7 +144,7 @@
         <Label Content="PDF:" Grid.Row="4" Grid.Column="2"/>
 
         <Label Content="Wiki:" Grid.Row="5" Grid.Column="0"/>
-        <ComboBox x:Name="ComboBoxWiki" Grid.Row="5" Grid.Column="1" Height="22" MaxHeight="22" VerticalAlignment="Center" ItemsSource="{Binding CurrentTicket.WikiIds, Mode=TwoWay}">
+        <ComboBox x:Name="ComboBoxWiki" Grid.Row="5" Grid.Column="1" Height="22" MaxHeight="22" VerticalAlignment="Center" IsEditable="True" ItemsSource="{Binding CurrentTicket.WikiIds, Mode=TwoWay}" PreviewKeyDown="ComboBoxWiki_PreviewKeyDown">
             <ComboBox.Style>
                 <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
                     <Setter Property="MinHeight" Value="22"></Setter>
