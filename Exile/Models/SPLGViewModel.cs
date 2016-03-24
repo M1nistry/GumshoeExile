@@ -11,16 +11,34 @@ namespace Exile.Models
 
         public ObservableCollection<Part> PartList { get; set; }
         public Tickets.SPLG CurrentTicket { get; set; }
+        public ObservableCollection<Person> _persons { get; set; }
         public ObservableCollection<Location.Storage> LocationCollection { get; set; } 
 
         public SPLGViewModel()
         {
             PartList = new ObservableCollection<Part>();
+            _persons = new ObservableCollection<Person>();
             PartList.Add(new Part
             {
                 Id = 0
             });
+            _persons.Add(new Person
+            {
+                Id = 1,
+                Name = "Beau Palmer-Brame",
+                Ags = "D717586",
+                Email = "bcpalm@au1.ibm.com",
+                Mobile = "0413372256"
+            });
 
+            _persons.Add(new Person
+            {
+                Id = 2,
+                Name = "Colby J Jansen",
+                Ags = "D711337",
+                Email = "cljansen@au1.ibm.com",
+                Mobile = "041111111"
+            });
 
             PartList.Insert(PartList.Count - 1, new Part
             {
@@ -49,14 +67,7 @@ namespace Exile.Models
                 Reference = "INC0000188821",
                 Node = "BRAA",
                 Pudo = "MKBR",
-                Ags = new Person
-                {
-                  Id  = 1,
-                  Name = "Beau Palmer-Brame",
-                  Ags = "D717586",
-                  Email = "bcpalm@au1.ibm.com",
-                  Mobile = "0413372256"
-                },
+                Ags = _persons[0],
                 DateDropOff = new DateTime(2016, 01, 23),
                 Parts = PartList,
                 RTC = 101922,

@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="Exile.CustomControls.ComboBoxMultiColumn"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Exile.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="22" d:DesignWidth="150">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ComboBoxItem}" x:Key="PersonStyle">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border Name="templateBorder" Padding="2" SnapsToDevicePixels="true">
+                            <ContentPresenter>
+                                <ContentPresenter.Content>
+                                    <Grid MaxHeight="300" MaxWidth="150" Width="140">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="90"/>
+                                            <ColumnDefinition Width="50"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Margin="1,1,3,1" Grid.Column="0" Text="{Binding Name, Mode=OneWay}" />
+                                        <TextBlock Margin="1" Grid.Column="1" Text="{Binding Ags}"/>
+                                    </Grid>
+                                </ContentPresenter.Content>
+                            </ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="ComboBoxItem.IsSelected" Value="True">
+                                <Setter Property="Background" Value="{StaticResource AccentColorBrush}"/>
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource BlackColorBrush}"/>
+                            </Trigger>
+                            <Trigger Property="ComboBoxItem.IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource AccentColorBrush}"/>
+                                <Setter Property="TextElement.Foreground" Value="{StaticResource BlackColorBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource BlackColorBrush}"/>
+                                <Setter TargetName="templateBorder" Property="Background" Value="{StaticResource AccentColorBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <ComboBox Name="ComboBoxGrid" Height="22" MinHeight="22" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" ItemsSource="{Binding}" DataContext="{Binding}" ToolTip="{Binding Path=Ags}" DisplayMemberPath="NameAgs" IsEditable="True" DropDownOpened="ComboBoxGrid_DropDownOpened">
+            <!--<ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="2" Text="Word"/>
+                        <TextBlock Margin="2" Text="Two"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>-->
+        </ComboBox>
+    </Grid>
+</UserControl>

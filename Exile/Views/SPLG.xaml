@@ -33,13 +33,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Content="Serial:"/>
-                <TextBox x:Name="TextBoxSerial" Grid.Row="0" Grid.Column="1" MinWidth="150" Text="{Binding SpareSerial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            controls:TextBoxHelper.ClearTextButton="True"
-                            controls:TextBoxHelper.IsWaitingForData="True"
-                            controls:TextBoxHelper.UseFloatingWatermark="True"
-                            controls:TextBoxHelper.Watermark="Watermark"
-                            controls:TextBoxHelper.SelectAllOnFocus="True"
-                             />
+                <TextBox x:Name="TextBoxSerial" Grid.Row="0" Grid.Column="1" MinWidth="150" Text="{Binding SpareSerial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Content="MPN:" Grid.Row="0" Grid.Column="2"/>
                 <TextBox x:Name="TextBoxMPN" Grid.Row="0" Grid.Column="3" Width="150" Text="{Binding SpareMPN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -58,6 +52,53 @@
             </Grid>
         </DataTemplate>
         <models:RatingConverter x:Key="RatingConverter"/>
+        <Style TargetType="{x:Type TextBox}" x:Key="SearchMetroTextBox" BasedOn="{StaticResource MetroButtonTextBox}">
+            <Setter Property="controls:TextBoxHelper.ButtonTemplate">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Grid x:Name="contentPresenter"
+                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          Margin="{TemplateBinding Padding}"
+                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                          Opacity="0.75">
+                                <Canvas Width="20"
+                                Height="20"
+                                Clip="F1 M 0,0L 48,0L 48,48L 0,48L 0,0"
+                                        Margin="0,-1,0,0">
+                                    <Path Width="16"
+                                  Height="18"
+                                  Stretch="Fill"
+                                  Fill="{TemplateBinding Foreground}"
+                                  Data="F1 M 52,34L 39,34L 39,21L 24,21L 24,55L 52,55L 52,34 Z M 55.9999,59L 20,59L 20,17L 43.25,17L 55.9999,29.75L 55.9999,59 Z M 43,22.25L 43,30L 50.7499,30L 43,22.25 Z M 31,53L 31,45L 34,45C 35.6569,45 37,45.8431 37,47.5C 37,49.1569 35.6569,50 34,50L 33,50L 33,53L 31,53 Z M 34,48C 34.5523,48 35,48.0523 35,47.5C 35,46.9477 34.5523,47 34,47L 33,47L 33,48L 34,48 Z M 45,53L 45,45L 50,45L 50,47L 47,47L 47,48L 49,48L 49,50L 47,50L 47,53L 45,53 Z M 38,45L 41,45C 42.6569,45 44,46.3431 44,48L 44,50C 44,51.6568 42.6569,53 41,53L 38,53L 38,45 Z M 42,50L 42,48C 42,47.4477 41.5523,47 41,47L 40,47L 40,51L 41,51C 41.5523,51 42,50.5523 42,50 Z " />
+                                </Canvas>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver"
+                             Value="True">
+                                <Setter TargetName="contentPresenter"
+                                Property="Opacity"
+                                Value="1" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver"
+                             Value="False">
+                                <Setter TargetName="contentPresenter"
+                                Property="Opacity"
+                                Value=".5" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled"
+                             Value="False">
+                                <Setter Property="Foreground"
+                                Value="#ADADAD" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MinHeight" Value="22"/>
+        </Style>
     </UserControl.Resources>
 
 
@@ -71,7 +112,7 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
-            <RowDefinition Height="110"/>
+            <RowDefinition Height="105"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="*"/>
@@ -85,12 +126,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ComboBox x:Name="ComboBoxSystem" Width="65" Margin="0,0,2,0" Grid.Row="0" Grid.Column="0" Height="22" MaxHeight="22" VerticalAlignment="Center" SelectedIndex="{Binding Path=CurrentTicket.System}">
-            <ComboBox.Style>
-                <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
-                    <Setter Property="MinHeight" Value="22"></Setter>
-                </Style>
-            </ComboBox.Style>
+        <ComboBox x:Name="ComboBoxSystem" Width="65" Margin="0,0,2,0" Grid.Row="0" Grid.Column="0" Height="22" MinHeight="22" MaxHeight="22" VerticalAlignment="Center" SelectedIndex="{Binding Path=CurrentTicket.System}">
             <ComboBoxItem Content=""/>
             <ComboBoxItem Content="TAS"/>
             <ComboBoxItem Content="SIIAM"/>
@@ -115,7 +151,13 @@
         </StackPanel>
 
         <Label Content="AGS:" Grid.Row="2" Grid.Column="0"/>
-        <TextBox x:Name="TextBoxAGS" Grid.Row="2" Grid.Column="1" Text="{Binding CurrentTicket.Ags.Ags, Mode=TwoWay}"/>
+        <customControls:ComboBoxMultiColumn x:Name="ComboMultiAGS" Grid.Row="2" Grid.Column="1" Height="22" MinHeight="22" MaxHeight="22" VerticalAlignment="Center" PreviewTextInput="ComboMultiAGS_PreviewTextInput" PreviewKeyDown="ComboMultiAGS_PreviewKeyDown"/>
+            <!--<ComboBox.Style>
+                <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                    <Setter Property="MinHeight" Value="22"></Setter>
+                </Style>
+            </ComboBox.Style>-->
+        
 
         <Label Content="Date:" Grid.Row="2" Grid.Column="2" />
         <DatePicker Grid.Row="2" Grid.Column="3" Width="150" HorizontalAlignment="Left" SelectedDate="{Binding CurrentTicket.DateDropOff, Mode=TwoWay}">
@@ -127,7 +169,7 @@
             </DatePicker.Style>
         </DatePicker>
 
-        <TabControl x:Name="PartsTabControl" Width="Auto" Height="Auto" Grid.Row="3" Grid.ColumnSpan="4" Grid.Column="0" ItemsSource="{Binding CurrentTicket.Parts, Mode=TwoWay}" ContentTemplate="{StaticResource TemplatePartTab}" Margin="0,0,-5,0" SelectionChanged="PartsTabControl_SelectionChanged">
+        <TabControl x:Name="PartsTabControl" Width="Auto" Height="Auto" Grid.Row="3" Grid.ColumnSpan="4" Grid.Column="0" ItemsSource="{Binding CurrentTicket.Parts, Mode=TwoWay}" ContentTemplate="{StaticResource TemplatePartTab}" Margin="0,0,-5,-5" SelectionChanged="PartsTabControl_SelectionChanged">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock>
@@ -142,6 +184,28 @@
         <TextBox x:Name="TextBoxRTC" Grid.Row="4" Grid.Column="1" Text="{Binding CurrentTicket.RTC, Mode=TwoWay}"/>
 
         <Label Content="PDF:" Grid.Row="4" Grid.Column="2"/>
+        <StackPanel Grid.Row="4" Grid.Column="3" Height="22" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                
+                    <Canvas x:Key="appbar_page_file_pdf" Width="76" Height="76" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                        <Path Width="35.9999" Height="42" Canvas.Left="20" Canvas.Top="17" Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="F1 M 52,34L 39,34L 39,21L 24,21L 24,55L 52,55L 52,34 Z M 55.9999,59L 20,59L 20,17L 43.25,17L 55.9999,29.75L 55.9999,59 Z M 43,22.25L 43,30L 50.7499,30L 43,22.25 Z M 31,53L 31,45L 34,45C 35.6569,45 37,45.8431 37,47.5C 37,49.1569 35.6569,50 34,50L 33,50L 33,53L 31,53 Z M 34,48C 34.5523,48 35,48.0523 35,47.5C 35,46.9477 34.5523,47 34,47L 33,47L 33,48L 34,48 Z M 45,53L 45,45L 50,45L 50,47L 47,47L 47,48L 49,48L 49,50L 47,50L 47,53L 45,53 Z M 38,45L 41,45C 42.6569,45 44,46.3431 44,48L 44,50C 44,51.6568 42.6569,53 41,53L 38,53L 38,45 Z M 42,50L 42,48C 42,47.4477 41.5523,47 41,47L 40,47L 40,51L 41,51C 41.5523,51 42,50.5523 42,50 Z "/>
+                    </Canvas>
+                </ResourceDictionary>
+            </StackPanel.Resources>
+            <Button Width="18" MinHeight="20" MaxHeight="20" Background="#00D5D5D5" Padding="0,1" Margin="2,0,0,0" >
+                <Rectangle Width="18" Height="20" Opacity="0.75" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Margin="-3,-3">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_file_pdf}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+            <TextBox x:Name="TextBoxPdf" Margin="3,0,0,0" MinWidth="125" IsReadOnly="True"/>
+        </StackPanel>
+        <!-- <TextBox Style="{StaticResource SearchMetroTextBox}" Grid.Row="4" Grid.Column="3" Height="22" VerticalAlignment="Center" VerticalContentAlignment="Center"/> -->
 
         <Label Content="Wiki:" Grid.Row="5" Grid.Column="0"/>
         <ComboBox x:Name="ComboBoxWiki" Grid.Row="5" Grid.Column="1" Height="22" MaxHeight="22" VerticalAlignment="Center" IsEditable="True" ItemsSource="{Binding CurrentTicket.WikiIds, Mode=TwoWay}" PreviewKeyDown="ComboBoxWiki_PreviewKeyDown">
@@ -196,57 +260,6 @@
             </ToggleButton>
         </StackPanel>
 
-        <TabControl Grid.Row="6" Grid.ColumnSpan="5" Grid.Column="0" controls:TabControlHelper.IsUnderlined="True">
-            <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="notes">
-                <customControls:FsRichTextBox x:Name="RichTextBoxNotes" Grid.Row="6" Grid.ColumnSpan="5" Grid.Column="0" MinHeight="348" SnapsToDevicePixels="True" CodeControlsVisibility="Collapsed"/>
-            </TabItem>
-
-            <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="locations">
-                <TabControl controls:TabControlHelper.IsUnderlined="False">
-                    <TabItem controls:ControlsHelper.HeaderFontSize="10" Header="Locations">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <TextBox x:Name="TextBoxLocationSearch" Style="{DynamicResource SearchMetroTextBox}" Width="180" Height="22" HorizontalAlignment="Right"/>
-                            <DataGrid x:Name="DataGridLocations" Grid.Row="1" Margin="0,5,0,0" CanUserResizeColumns="False" ItemsSource="{Binding LocationCollection}" AutoGenerateColumns="False">
-                                <DataGrid.ColumnHeaderStyle>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                        <Setter Property="FontSize" Value="12"/>
-                                    </Style>
-                                </DataGrid.ColumnHeaderStyle>
-                                    <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Plant" Width="50" Binding="{Binding Plant}"/>
-                                    <DataGridTextColumn Header="SLoc" Width="50" Binding="{Binding Node}"/>
-                                    <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Description}"/>
-                                    <DataGridTextColumn Header="Node" Width="50" Binding="{Binding Node}"/>
-                                    <DataGridCheckBoxColumn Header="" Width="20" Binding="{Binding Restricted}"/>
-                                    <DataGridCheckBoxColumn Header="" Width="20" Binding="{Binding Inbound}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </Grid>
-                    </TabItem>
-                    <TabItem controls:ControlsHelper.HeaderFontSize="10" Header="Kits">
-
-                    </TabItem>
-                    <TabItem controls:ControlsHelper.HeaderFontSize="10" Header="Addresses">
-
-                    </TabItem>
-                    <TabItem controls:ControlsHelper.HeaderFontSize="10" Header="Consumables">
-
-                    </TabItem>
-                </TabControl>
-
-            </TabItem>
-
-            <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="person"></TabItem>
-
-            <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="miscellaneous"></TabItem>
-            <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="details" Visibility="Collapsed"></TabItem>
-            <TabItem controls:ControlsHelper.HeaderFontSize="12" IsEnabled="False" Header="                                                     "></TabItem>
-        </TabControl>
+        <local:NotesTabControl  Grid.Row="6" Grid.ColumnSpan="5" Grid.Column="0"></local:NotesTabControl>
     </Grid>
 </UserControl>

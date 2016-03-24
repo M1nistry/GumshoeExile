@@ -32,7 +32,6 @@ namespace Exile
             ButtonExpand.PreviewMouseDown += ButtonExpand_MouseDown;
             Timestamps = true;
             AddStatus($"Welcome back, {Environment.UserName}");
-            
         }
 
         private void AddStatus(string status)
