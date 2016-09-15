@@ -56,6 +56,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="TelstraPeopleSearch">
+      <HintPath>..\..\PeopleSearch\TelstraPeopleSearch\TelstraPeopleSearch\bin\Debug\TelstraPeopleSearch.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -69,6 +72,7 @@
       <DependentUpon>ComboBoxMultiColumn.xaml</DependentUpon>
     </Compile>
     <Compile Include="Locations.cs" />
+    <Compile Include="Models\PersonSearchViewModel.cs" />
     <Compile Include="Models\SPLGViewModel.cs" />
     <Compile Include="Part.cs" />
     <Compile Include="Person.cs" />
@@ -76,6 +80,9 @@
     <Compile Include="Tickets.cs" />
     <Compile Include="Views\NotesTabControl.xaml.cs">
       <DependentUpon>NotesTabControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PersonSearch.xaml.cs">
+      <DependentUpon>PersonSearch.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SPLG.xaml.cs">
       <DependentUpon>SPLG.xaml</DependentUpon>
@@ -129,6 +136,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NotesTabControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PersonSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

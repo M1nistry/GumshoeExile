@@ -54,7 +54,9 @@
 
         </TabItem>
 
-        <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="person"></TabItem>
+        <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="person">
+            <local:PersonSearch/>
+        </TabItem>
 
         <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="miscellaneous"></TabItem>
         <TabItem controls:ControlsHelper.HeaderFontSize="12" Header="details" Visibility="Collapsed"></TabItem>

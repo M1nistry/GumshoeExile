@@ -1,0 +1,66 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Exile.Views"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/controls" x:Class="Exile.Views.PersonSearch"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="410">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="70"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBox Grid.Row="0" Grid.Column="0" x:Name="TextBoxName" Margin="1,1" MinHeight="22" Custom:TextBoxHelper.Watermark="First Name"/>
+            <TextBox Grid.Row="1" Grid.Column="0" x:Name="TextBoxSurname" Margin="1,1" MinHeight="22" Custom:TextBoxHelper.Watermark="Surname"/>
+
+            <ComboBox Grid.Row="0" Grid.Column="1" MinHeight="22" Margin="1,1" IsReadOnly="True" >
+                <ComboBoxItem Content=""/>
+                <ComboBoxItem Content="NT"/>
+                <ComboBoxItem Content="NSW"/>
+                <ComboBoxItem Content="QLD"/>
+                <ComboBoxItem Content="SA"/>
+                <ComboBoxItem Content="TAS"/>
+                <ComboBoxItem Content="VIC"/>
+                <ComboBoxItem Content="WA"/>
+            </ComboBox>
+
+            <TextBox Grid.Row="1" Grid.Column="1" MinHeight="22" Margin="1,1" Custom:TextBoxHelper.Watermark="Postcode"/>
+
+            <Button Grid.Row="0" Grid.Column="2" Content="Search" MinHeight="22" Margin="1,1" Padding="-1"/>
+            <Button Grid.Row="1" Grid.Column="2" Content="Back" MinHeight="22" Margin="1,1" Padding="-1"/>
+        </Grid>
+
+        <TabControl Grid.Row="1" Custom:TabControlHelper.IsUnderlined="True">
+            <TabItem Header="lookup" Custom:ControlsHelper.HeaderFontSize="12">
+                
+            </TabItem>
+            <TabItem Header="results" Custom:ControlsHelper.HeaderFontSize="12">
+                
+            </TabItem>
+            <TabItem Header="                                                                                            " Custom:ControlsHelper.HeaderFontSize="12" IsEnabled="False">
+
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

@@ -40,7 +40,7 @@ namespace Exile
                 var theme = ThemeManager.DetectAppStyle(Application.Current);
                 var accent = ThemeManager.GetAccent(this.Name);
                 ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);
-                Application.Current.MainWindow.BorderBrush = (System.Windows.Media.Brush)accent.Resources["AccentColorBrush"];
+                Application.Current.MainWindow.BorderBrush = (System.Windows.Media.Brush)accent.Resources["AccentColorBrush"]; 
             }
         }
 
